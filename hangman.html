@@ -1,24 +1,41 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Hangman</title>
-    </head>
-    <body>
-        <h1 style="font-family: Arial; text-align: center;">Hangman</h1>
 
-        <div style="text-align:center;">
-            <form>
-                <label>Enter a letter: </label>
-                <input type="text" maxlength=1 style="width: 250px;">
-            </form>
-        </div>
-        <div style="text-align: center;">
-            
-            <p style="display: inline; font-size: 24px;">__</p>
-            <p style="display: inline; font-size: 24px;">__</p>
-            <p style="display: inline; font-size: 24px;">__</p>
-            <p style="display: inline; font-size: 24px;">__</p>
-            <p style="display: inline; font-size: 24px;">__</p>
-        </div>
-    </body>
+<html>
+  <head>
+    <title>Hangman</title>
+  </head>
+  <body style="font-family: Arial; text-align: center;">
+    <h1>Hangman</h1>
+
+    <div>
+      {% if status == "playing" %}
+        <form method="POST">
+          <label>Enter a letter:</label>
+          <input type="text" name="letter" maxlength="1" style="width: 50px;">
+          <button type="submit">Guess</button>
+        </form>
+      {% endif %}
+    </div>
+
+    <div style="margin-top: 20px;">
+      <h2>
+        {% for letter in display %}
+          <span style="margin: 5px; font-size: 24px;">{{ letter }}</span>
+        {% endfor %}
+      </h2>
+    </div>
+
+    <h3>Lives remaining: {{ lives }}</h3>
+    <img src="{{ url_for('static', filename='hangman' ~ (8 - lives) ~ '.PNG') }}"
+
+    {% if status == "won" %}
+      <h2 style="color: green;"></h2>You won! The word was {{ word }}.</h2>
+      <a href="/reset">Play again</a>
+    {% elif status == "lost" %}
+      <h2 style="color: red;">You lost! The word was {{ word }}.</h2>
+      <a href="/reset">Try again</a>
+    {% endif %}
+  </body>
+</html>
+
 </html>
